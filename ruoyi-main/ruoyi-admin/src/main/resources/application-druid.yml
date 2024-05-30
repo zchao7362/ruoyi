@@ -6,7 +6,7 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://122.114.254.83:3306/orgkp?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+                url: jdbc:mysql://127.0.0.1:3306/orgkp?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
                 username: orgkp
                 password: 8aAdC7wwHnCWBhHG
             # 从库数据源
