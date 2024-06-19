@@ -18,7 +18,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 8099
+  port: 8080
   servlet:
     # 应用的访问路径
     context-path: /
@@ -155,13 +155,13 @@ swagger:
 
 
 
-# 北京踏奇
 alipay:
-  appid: 2021003127666952  #2021004101688196
+  appid: 2021004153676227  #2021004101688196
   payCount: 2  #支付宝用户最大调用次数
-  authorizeUrl: http://pay.taqikeji.cn/outside/order/alipay/publicAppAuthorize
-  getUidUrl: http://pay.taqikeji.cn/outside/order/payOrderGetUid
-  appUrl: http://pay.taqikeji.cn
-  orderPay: http://pay.taqikeji.cn/outside/order/
-  callback: http://pay.taqikeji.cn/outside/order/alipay/callback
-  returnUrl: http://pay.taqikeji.cn/outside/order/alipay/return
+  authorizeUrl: http://pay.liuxiwen.com/outside/order/alipay/publicAppAuthorize
+  getUidUrl: http://pay.liuxiwen.com/outside/order/payOrderGetUid
+  appUrl: http://pay.liuxiwen.com
+  orderPay: http://pay.liuxiwen.com/outside/order/
+  callback: http://pay.liuxiwen.com/outside/order/alipay/callback
+  returnUrl: http://pay.liuxiwen.com/outside/order/alipay/return
+  apikey: 95ad4df24fec408b590c10c4dc7fb827

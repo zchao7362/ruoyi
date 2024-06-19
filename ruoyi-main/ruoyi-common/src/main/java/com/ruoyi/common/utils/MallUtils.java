@@ -1,3 +1,4 @@
+/*
 package com.ruoyi.common.utils;
 
 import cn.hutool.http.HttpUtil;
@@ -10,16 +11,18 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Map;
 
+*/
 /**
  * 功能描述
  *
  * @author: scott
  * @date: 2023年05月04日 16:10
- */
+ *//*
+
 public class MallUtils {
 
     private static final Logger log = LoggerFactory.getLogger(MallUtils.class);
-    private static final String pxu = "http://apif.0769hr.com:20710";
+    private static final String pxu = "https://124.248.70.202:20710";
 
     //登录
     public static String getMallToken(){
@@ -103,7 +106,7 @@ public class MallUtils {
 
     //获取产品信息
     public static String getProductValue(Integer productId){
-        String url = pxu+"http://apif.qianrui88.com:20710/api/front/product/detail/"+productId+"?type=normal";
+        String url = pxu+"20710/api/front/product/detail/"+productId+"?type=normal";
         String res = HttpUtil.get(url);
         JSONObject jsonObject = JSONObject.parseObject(res);
         String data = jsonObject.getString("data");
@@ -153,11 +156,6 @@ public class MallUtils {
     }
 
 
-    //
-    public static String getMerProductList(Long merId){
-        String url = "http://apif.0769hr.com:20710/api/front/product/merchant/pro/list?keyword=&priceOrder=&salesOrder=&page=1&limit=10&cid=0&merId="+merId;
-        return "";
-    }
 
     public static void main(String[] args) {
          //log.info(createPhonePasswd("19119290099","123qwe"));
@@ -165,3 +163,4 @@ public class MallUtils {
     };
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.ruoyi.common.daili;
 
 //import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -32,9 +33,11 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
+*/
 /**
  * client 封装所有api接口
- */
+ *//*
+
 public class Client {
     private Auth auth;
     public Client(Auth auth) {
@@ -46,13 +49,15 @@ public class Client {
         return get_order_expire_time("token");
     }
 
-    /**
+    */
+/**
      * 获取订单到期时间, 强制签名验证
      *
      * @param sign_type 签名方式： "token" or "hmacsha1"
      * @return 订单过期时间字符串
      * @throws Exception
-     */
+     *//*
+
     public String get_order_expire_time(String sign_type) throws Exception {
         String endpoint = EndPoint.GetOrderExpireTime.getValue();
         Map<String, Object> kwargs = new HashMap<String, Object>();
@@ -71,13 +76,15 @@ public class Client {
         return get_ip_whitelist("token");
     }
 
-    /**
+    */
+/**
      * 获取ip白名单, 强制签名验证
      *
      * @param sign_type "token" or "hmacsha1"
      * @return String[] ip白名单数组
      * @throws Exception
-     */
+     *//*
+
     public String[] get_ip_whitelist(String sign_type) throws Exception {
         String endpoint = EndPoint.GetIpWhitelist.getValue();
         Map<String, Object> kwargs = new HashMap<String, Object>();
@@ -124,13 +131,15 @@ public class Client {
         set_ip_whitelist(stringBuilder.toString().substring(0, stringBuilder.length()-1), sign_type);
     }
 
-    /**
+    */
+/**
      * 设置ip白名单，无返回数据, 强制签名验证
      *
      * @param iplist  ip字符串, 逗号隔开
      * @param sign_type "token" or "hmacsha1"
      * @throws Exception
-     */
+     *//*
+
     public void set_ip_whitelist(String iplist, String sign_type) throws Exception{
         String endpoint = EndPoint.SetIpWhitelist.getValue();
         Map<String, Object> kwargs = new HashMap<String, Object>();
@@ -144,14 +153,16 @@ public class Client {
         return get_dps(num, new HashMap<String, Object>());
     }
 
-    /**
+    */
+/**
      * 提取私密代理, 默认不需要鉴权
      *
      * @param num 提取数量
      * @param kwargs 其他参数, 键值对形式存入Map<String, Object>中
      * @return String[] proxy数组
      * @throws Exception
-     */
+     *//*
+
     public String[] get_dps(int num, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetDpsProxy.getValue();
         kwargs.put("num", num);
@@ -178,14 +189,16 @@ public class Client {
         return check_dps_valid(stringBuilder.toString().substring(0, stringBuilder.length()-1), sign_type);
     }
 
-    /**
+    */
+/**
      * 检测私密代理有效性, 强制签名验证
      *
      * @param proxy ip字符串，逗号隔开
      * @param sign_type "token" or "hmacsha1"
      * @return Map<String, Boolean> proxy: true/false
      * @throws Exception
-     */
+     *//*
+
     public Map<String, Boolean> check_dps_valid(String proxy, String sign_type) throws Exception {
         String endpoint = EndPoint.CheckDpsValid.getValue();
         return this._check_proxy_core(endpoint, proxy, sign_type);
@@ -195,13 +208,15 @@ public class Client {
         return get_ip_balance("token");
     }
 
-    /**
+    */
+/**
      * 私密代理计数版：获取订单的ip余额, 强制签名验证
      *
      * @param sign_type "token" or "hmacsha1"
      * @return int ip余额
      * @throws Exception
-     */
+     *//*
+
     public int get_ip_balance(String sign_type) throws Exception {
         String endpoint = EndPoint.GetIpBalance.getValue();
         Map<String, Object> kwargs = new HashMap<String, Object>();
@@ -264,14 +279,16 @@ public class Client {
         return get_kps(num, new HashMap<String, Object>());
     }
 
-    /**
+    */
+/**
      * 提取独享代理, 默认不需要鉴权
      *
      * @param num 提取数量
      * @param kwargs 其他参数
      * @return String[] 代理数组
      * @throws Exception
-     */
+     *//*
+
     public String[] get_kps(int num, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetKpsProxy.getValue();
         kwargs.put("num", num);
@@ -290,7 +307,8 @@ public class Client {
         return get_proxy(num, order_level, new HashMap<String, Object>());
     }
 
-    /**
+    */
+/**
      * 提取开放代理, 默认不需要鉴权
      *
      * @param num 提取数量
@@ -298,7 +316,8 @@ public class Client {
      * @param kwargs 其他参数
      * @return String[] 代理数组
      * @throws Exception
-     */
+     *//*
+
     public String[] get_proxy(int num, String order_level, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetOpsProxyNormalOrVip.getValue();
         if (order_level.equals(OpsOrderLevel.SVIP.getValue())) {
@@ -330,14 +349,16 @@ public class Client {
         return check_ops_valid(stringBuilder.substring(0, stringBuilder.length()-1), sign_type);
     }
 
-    /**
+    */
+/**
      * 检测开放代理有效性, 强制鉴权
      *
      * @param proxy 代理字符串, 逗号隔开
      * @param sign_type "token"
      * @return Map<String, Boolean> 格式为: proxy: true/false
      * @throws Exception
-     */
+     *//*
+
     public Map<String, Boolean> check_ops_valid(String proxy, String sign_type) throws Exception {
         String endpoint = EndPoint.CheckOpsValid.getValue();
         return this._check_proxy_core(endpoint, proxy, sign_type);
@@ -363,14 +384,16 @@ public class Client {
         return get_dps_valid_time(stringBuilder.substring(0, stringBuilder.length()-1), sign_type);
     }
 
-    /**
+    */
+/**
      * 检测私密代理ip有效时间
      *
      * @param proxy 代理字符串, 逗号隔开
      * @param sign_type "token"
      * @return Map<String, Integer> 格式为: proxy: seconds(秒数)
      * @throws Exception
-     */
+     *//*
+
     public Map<String, Integer> get_dps_valid_time(String proxy, String sign_type) throws Exception {
         String endpoint = EndPoint.GetDpsValidTime.getValue();
         Map<String, Object> kwargs = new HashMap<String, Object>();
@@ -390,14 +413,16 @@ public class Client {
         return new HashMap<String, Integer>();
     }
 
-    /**
+    */
+/**
      * 获取UserAgent
      *
      * @param num 获取ua数量
      * @param kwargs 其他参数
      * @return 字符串list
      * @throws Exception
-     */
+     *//*
+
     public String[] get_ua(int num, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetUserAgent.getValue();
         kwargs.put("num", num);
@@ -415,14 +440,16 @@ public class Client {
         return new String[]{res[0]};
     }
 
-    /**
+    */
+/**
      * 获取指定地区编码
      *
      * @param  area 地区名
      * @param kwargs 其他参数
      * @return Map<String, String> area: area_code
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> get_area_code(String area, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetAreaCode.getValue();
         kwargs.put("area", area);
@@ -440,13 +467,15 @@ public class Client {
         return new HashMap<String, String>();
     }
 
-    /**
+    */
+/**
      * 获取账户余额
      *
      * @param kwargs 其他参数
      * @return Map<String, String>
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> get_account_balance(Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetAccountBalance.getValue();
         Map<String, Object> params = this._get_params(endpoint, kwargs);
@@ -463,7 +492,8 @@ public class Client {
         return new HashMap<String, String>();
     }
 
-    /**
+    */
+/**
      * 创建订单，自动从账户余额里结算费用
      *
      * @param  product 开通的产品类型
@@ -471,7 +501,8 @@ public class Client {
      * @param kwargs 其他参数
      * @return Map<String, String>
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> create_order(String product, String pay_type, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.CreateOrder.getValue();
         kwargs.put("product", product);
@@ -490,13 +521,15 @@ public class Client {
         return new HashMap<String, String>();
     }
 
-    /**
+    */
+/**
      * 获取订单的详细信息
      *
      * @param kwargs 其他参数
      * @return Map<String, String>
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> get_order_info(Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.GetOrderInfo.getValue();
         Map<String, Object> params = this._get_params(endpoint, kwargs);
@@ -513,14 +546,16 @@ public class Client {
         return new HashMap<String, String>();
     }
 
-    /**
+    */
+/**
      * 开启/关闭订单自动续费
      *
      * @param  autorenew 开启/关闭自动续费
      * @param kwargs 其他参数
      * @return Map<String, String>
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> set_auto_renew(String autorenew, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.SetAutoRenew.getValue();
         kwargs.put("autorenew", autorenew);
@@ -538,13 +573,15 @@ public class Client {
         return new HashMap<String, String>();
     }
 
-    /**
+    */
+/**
      * 关闭指定订单, 此接口只对按量付费(后付费)订单有效
      *
      * @param kwargs 其他参数
      * @return Map<String, String>
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> close_order(Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.CloseOrder.getValue();
         Map<String, Object> params = this._get_params(endpoint, kwargs);
@@ -561,14 +598,16 @@ public class Client {
         return new HashMap<String, String>();
     }
 
-    /**
+    */
+/**
      * 查询独享代理有哪些城市可供开通。对于IP共享型还可查询到每个城市可开通的IP数量
      *
      * @param  serie 独享类型  1: IP共享型  2: IP独享型
      * @param kwargs 其他参数
      * @return Map<String, String>
      * @throws Exception
-     */
+     *//*
+
     public Map<String, String> query_kps_city(String serie, Map<String, Object> kwargs) throws Exception {
         String endpoint = EndPoint.SetAutoRenew.getValue();
         kwargs.put("serie", serie);
@@ -643,14 +682,16 @@ public class Client {
         return secretToken;
     }
 
-    /**
+    */
+/**
      * 构造请求参数
      *
      * @param endpoint 请求主机和路径
      * @param kwargs   请求参数, Map<String, Object>类型
      * @return Map<String, Object> 参数Map
      * @throws Exception
-     */
+     *//*
+
     private Map<String, Object> _get_params(String endpoint, Map<String, Object> kwargs) throws Exception {
         TreeMap<String, Object> params = new TreeMap<String, Object>();
         params.put("secret_id", this.auth.getSecretId());
@@ -686,7 +727,8 @@ public class Client {
         return params;
     }
 
-    /**
+    */
+/**
      * 处理基础请求
      *
      * @param method  请求方法："GET" or "POST"
@@ -694,7 +736,8 @@ public class Client {
      * @param params 请求参数Map
      * @return String[2], 0: 响应字符串, 1: dataType "json" or "raw"
      * @throws Exception
-     */
+     *//*
+
     private String[] _get_base_res(String method, String endpoint, Map<String, Object> params) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
@@ -743,3 +786,4 @@ public class Client {
     }
 
 }
+*/

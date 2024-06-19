@@ -1,8 +1,11 @@
+/*
 package com.ruoyi.common.daili.enums;
 
+*/
 /**
  * 各个api的主机+路径
- */
+ *//*
+
 public enum EndPoint {
     GetOrderExpireTime("dev.kdlapi.com/api/getorderexpiretime"),
     GetIpWhitelist("dev.kdlapi.com/api/getipwhitelist"),
@@ -42,3 +45,4 @@ public enum EndPoint {
         return value;
     }
 }
+*/

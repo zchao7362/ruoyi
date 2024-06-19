@@ -13,6 +13,7 @@ import com.ruoyi.system.service.IOrgAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.OrgOrderInfoMapper;
 import com.ruoyi.system.domain.OrgOrderInfo;
@@ -34,6 +35,8 @@ public class OrgOrderInfoServiceImpl implements IOrgOrderInfoService
     @Autowired
     private IOrgAccountService orgAccountService;
 
+    @Value(value = "${alipay.apikey}")
+    private String apikey;
 
     private static final Logger log = LoggerFactory.getLogger(OrgOrderInfoServiceImpl.class);
     /**
@@ -189,23 +192,23 @@ public class OrgOrderInfoServiceImpl implements IOrgOrderInfoService
     @Override
     public void asyncThreadCQCallbackOrder(OrgOrderInfo orderInfo) {
         try{
-
-            String apikey = "95ad4df24fec408b590c10c4dc7fb827";
-            BigDecimal game_amount= orderInfo.getAmount().multiply(new BigDecimal(15000));
-            String parm = "game_amount="+game_amount+"&game_user_id="+orderInfo.getAccountOrderNo()+"&money="+orderInfo.getAmount();
+            //BigDecimal game_amount= orderInfo.getAmount().multiply(new BigDecimal(15000));
+            String parm = "game_amount="+orderInfo.getAmount()+"&game_user_id="+orderInfo.getAccountOrderNo()+"&account="+orderInfo.getAccountOrderNo()+"&money="+orderInfo.getAmount();
             log.info("加密前未加token的串： "+parm);
             String sign = Md5Utils.hash(parm+apikey);
             log.info("加token后的加密后的串： "+sign);
             log.info("回调地址： "+orderInfo.getCallbackUrl());
-            String postData = "{\"game_amount\":\""+game_amount+"\"," +
+            String postData = "{\"game_amount\":\""+orderInfo.getAmount()+"\"," +
                     "\"game_user_id\":\""+orderInfo.getAccountOrderNo()+"\"," +
+                    "\"account\":\""+orderInfo.getAccountOrderNo()+"\"," +
                     "\"money\":\""+orderInfo.getAmount()+"\"," +
                     "\"sign\":\""+sign+"\"}";
             log.info("回调参数： "+postData);
             String callbackJson = "";
             HashMap<String, Object> paramMap = new HashMap<>();
-            paramMap.put("game_amount", game_amount);
+            paramMap.put("game_amount", orderInfo.getAmount());
             paramMap.put("game_user_id", orderInfo.getAccountOrderNo());
+            paramMap.put("account", orderInfo.getAccountOrderNo());
             paramMap.put("money", orderInfo.getAmount()+"");
             paramMap.put("sign", sign);
             callbackJson = HttpUtil.post(orderInfo.getCallbackUrl(), postData);

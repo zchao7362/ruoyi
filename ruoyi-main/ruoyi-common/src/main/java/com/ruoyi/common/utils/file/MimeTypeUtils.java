@@ -36,7 +36,7 @@ public class MimeTypeUtils
             // 视频格式
             "mp4", "avi", "rmvb",
             //证书
-            "crt",
+            "crt", "cer",
             // pdf
             "pdf" };
 
