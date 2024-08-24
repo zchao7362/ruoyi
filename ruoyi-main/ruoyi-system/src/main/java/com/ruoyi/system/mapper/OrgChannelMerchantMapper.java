@@ -62,4 +62,6 @@ public interface OrgChannelMerchantMapper
     OrgChannelMerchant selectByMerchantIdChannelId(OrgChannelMerchant ocm);
 
     OrgChannelMerchant selectCollectionRatioDesc();
+
+    OrgChannelMerchant selectOrgChannelMerchantByMerchantNo(String merchantNo);
 }

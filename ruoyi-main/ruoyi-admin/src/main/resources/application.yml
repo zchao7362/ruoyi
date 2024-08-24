@@ -134,7 +134,7 @@ xss:
   # 过滤开关/system/notice
   enabled: true
   # 排除链接（多个用逗号分隔）
-  excludes: /system/notice/*,/outside/order/*
+  excludes: /system/notice/*,/outside/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
@@ -143,25 +143,13 @@ swagger:
   # 是否开启swagger
   enabled: true
 
-## 北京玉湖
-#alipay:
-#  appid: 123445345
-#  authorizeUrl: http://pay.yjw.ink/outside/order/alipay/publicAppAuthorize
-#  getUidUrl: http://pay.yjw.ink/outside/order/alipay/publicAppAuthorize
-#  appUrl: http://pay.yjw.ink
-#  orderPay: http://pay.yjw.ink/outside/order/
-#  callback: http://pay.yjw.ink/outside/order/alipay/callback
-#  returnUrl: http://pay.yjw.ink/outside/order/alipay/return
-
-
-
 alipay:
   appid: 2021004153612418  #2021004101688196
   payCount: 2  #支付宝用户最大调用次数
-  authorizeUrl: http://pay.xwxingda.com/outside/order/alipay/publicAppAuthorize
-  getUidUrl: http://pay.xwxingda.com/outside/order/payOrderGetUid
-  appUrl: http://pay.xwxingda.com
-  orderPay: http://pay.xwxingda.com/outside/order/
-  callback: http://pay.xwxingda.com/outside/order/alipay/callback
-  returnUrl: http://pay.xwxingda.com/outside/order/alipay/return
+  authorizeUrl: http://pay.ayruiheyue.cn/outside/order/alipay/publicAppAuthorize
+  getUidUrl: http://pay.ayruiheyue.cn/outside/order/payOrderGetUid
+  appUrl: http://pay.ayruiheyue.cn
+  orderPay: http://pay.ayruiheyue.cn/outside/order/
+  callback: http://pay.ayruiheyue.cn/outside/order/alipay/callback
+  returnUrl: http://pay.ayruiheyue.cn/outside/order/alipay/return
   apikey: 95ad4df24fec408b590c10c4dc7fb827

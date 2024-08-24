@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="channelId"    column="channelId"    />
         <result property="channelName"    column="channelName"    />
+        <result property="createrOrderUrl"    column="createrOrderUrl"    />
+        <result property="callbackUrl"    column="callbackUrl"    />
         <result property="merchantId"    column="merchantId"    />
         <result property="merchantNo"    column="merchantNo"    />
         <result property="merchantName"    column="merchantName"    />
@@ -22,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOrgChannelMerchantVo">
-        select id, channelId,(select channelName from org_pay_channel where id = channelId ) as channelName, merchantId,
+        select id, channelId,(select channelName from org_pay_channel where id = channelId ) as channelName , merchantId,
                (select merchantName from org_merchant where id = merchantId ) as merchantName, merchantNo,
                merchanKey, publicKey, privateKey, passPublicKey,
                (
@@ -74,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             curdate() AS totleToday,
                merchantChannelStatus from org_channel_merchant ocm
     </sql>
+
 
     <select id="selectOrgChannelMerchantList" parameterType="com.ruoyi.system.domain.OrgChannelMerchant" resultMap="OrgChannelMerchantResult">
         <include refid="selectOrgChannelMerchantVo"/>
@@ -169,5 +172,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+
+    <select id="selectOrgChannelMerchantByMerchantNo" parameterType="com.ruoyi.system.domain.OrgChannelMerchant" resultMap="OrgChannelMerchantResult">
+        select merchantNo,merchanKey from org_channel_merchant ocm where merchantNo = #{merchantNo}
+    </select>
 
 </mapper>

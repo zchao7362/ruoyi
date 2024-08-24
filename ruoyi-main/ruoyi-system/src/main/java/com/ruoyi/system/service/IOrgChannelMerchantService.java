@@ -66,4 +66,14 @@ public interface IOrgChannelMerchantService
      * 根据 倒序排序
      */
     public OrgChannelMerchant selectCollectionRatioDesc();
+
+
+    /**
+     * 查询商户通道
+     *
+     * @param merchantNo 商户通道主键
+     * @return 商户通道
+     */
+    public OrgChannelMerchant selectOrgChannelMerchantByMerchantNo(String merchantNo);
+
 }

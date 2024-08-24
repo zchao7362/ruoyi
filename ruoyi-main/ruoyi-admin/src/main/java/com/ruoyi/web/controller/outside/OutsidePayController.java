@@ -20,6 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +37,10 @@ public class OutsidePayController extends BaseController {
 
     @Value(value = "${alipay.appUrl}")
     private String appUrl;
+
+    @Autowired
+    private PayZftServer payZftServer;
+
 
     private static final Logger logger = LoggerFactory.getLogger(OutsidePayController.class);
 //
@@ -112,7 +117,7 @@ public class OutsidePayController extends BaseController {
 
     @PostMapping("/createOrderInfo")
     @ResponseBody
-    public String createAlipayOrder(OutsideOrderVO orderVo) throws Exception{
+    public String createAlipayOrder(HttpServletResponse response,OutsideOrderVO orderVo) throws Exception{
         logger.info("接收参数:"+orderVo.toString());
         if(StringUtils.isEmpty(orderVo.getAppid())){
             return "system/pay/payment";
@@ -150,7 +155,15 @@ public class OutsidePayController extends BaseController {
         orderInfo.setAcountAppId(orderVo.getAppid());
         orderInfo.setReturnUrl(orderVo.getReturnUrl());
         orderInfo.setCashier(orderVo.getCashier());
-        return alipayServer.aliPaymentReString(orderInfo);
+        //return alipayServer.aliPaymentReString(orderInfo);
+        if("30".equals(orderVo.getMethod())){
+            String url = payZftServer.tradeGameOrder(orderInfo);
+            //跳转页面至url
+            response.sendRedirect(url);
+        }else{
+            return alipayServer.aliPaymentReString(orderInfo);
+        }
+        return "系统错误";
     }
 
     public static BigDecimal getRandomRedPacketBetweenMinAndMax(){

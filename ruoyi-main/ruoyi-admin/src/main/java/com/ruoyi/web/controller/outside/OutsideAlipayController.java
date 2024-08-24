@@ -67,6 +67,10 @@ public class OutsideAlipayController extends BaseController {
     @Autowired
     private ISysAlipayConfigService sysAlipayConfigService;
 
+
+    @Autowired
+    private PayZftServer payZftServer;
+
     @Autowired
     private  IOrgChannelMerchantService ocmService;
 
@@ -143,8 +147,16 @@ public class OutsideAlipayController extends BaseController {
         orderInfo.setAcountAppId(orderVo.getAppid());
         orderInfo.setReturnUrl(orderVo.getReturnUrl());
         orderInfo.setCashier(account.getCashier());
-        return alipayServer.aliPayment(orderInfo);
-
+        orderInfo.setCallbackStatus(0L);
+        if("30".equals(orderVo.getMethod())){
+            return payZftServer.tradeOrder(orderInfo);
+        }else{
+            if(true){
+                return alipayServer.aliPayment(orderInfo);
+            }else{
+                return alipayServer.aliPayment(orderInfo);
+            }
+        }
     }
 
     @GetMapping("/payOrderInfo/{orderNo}/{sign}")

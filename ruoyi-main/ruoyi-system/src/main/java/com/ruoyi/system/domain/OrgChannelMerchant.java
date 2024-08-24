@@ -24,6 +24,8 @@ public class OrgChannelMerchant extends BaseEntity
     @Excel(name = "通道ID")
     private Long channelId;
     private String channelName;
+    private String createrOrderUrl;
+    private String callbackUrl;
 
     /** 商户ID */
     @Excel(name = "商户ID")
@@ -195,6 +197,22 @@ public class OrgChannelMerchant extends BaseEntity
 
     public void setCollectionRatio(BigDecimal collectionRatio) {
         this.collectionRatio = collectionRatio;
+    }
+
+    public String getCreaterOrderUrl() {
+        return createrOrderUrl;
+    }
+
+    public void setCreaterOrderUrl(String createrOrderUrl) {
+        this.createrOrderUrl = createrOrderUrl;
+    }
+
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
     }
 
     @Override

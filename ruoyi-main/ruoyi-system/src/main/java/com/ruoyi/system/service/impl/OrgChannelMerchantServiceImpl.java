@@ -104,4 +104,9 @@ public class OrgChannelMerchantServiceImpl implements IOrgChannelMerchantService
     public OrgChannelMerchant selectCollectionRatioDesc() {
         return orgChannelMerchantMapper.selectCollectionRatioDesc();
     }
+
+    @Override
+    public OrgChannelMerchant selectOrgChannelMerchantByMerchantNo(String merchantNo) {
+        return orgChannelMerchantMapper.selectOrgChannelMerchantByMerchantNo(merchantNo);
+    }
 }

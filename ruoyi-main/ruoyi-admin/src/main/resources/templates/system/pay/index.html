@@ -83,7 +83,7 @@
             "sign": $('#sign').val(),
             "orderNo": $('#orderNo').val(),
             "cashier": 0,
-            "method": 10,
+            "method": $('#method').val(),
             "appid": $('#appid').val()};
         $.operate.submit(url, "post", "json", data);
     }
