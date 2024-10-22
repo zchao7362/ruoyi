@@ -35,6 +35,8 @@ public class OrgAccount extends BaseEntity
 
     private Long cashier;//是否要收银台   1显示    或  0 不显示
 
+    private Long payChannel;//收款渠道   0 原生通道  或  1直付通
+
     /** 客户状态 */
     @Excel(name = "客户状态")
     private Long accountStatus;
@@ -157,6 +159,7 @@ public class OrgAccount extends BaseEntity
         this.totleYjAmount = totleYjAmount;
     }
 
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -168,5 +171,13 @@ public class OrgAccount extends BaseEntity
             .append("accountToken", getAccountToken())
             .append("createdTime", getCreatedTime())
             .toString();
+    }
+
+    public Long getPayChannel() {
+        return payChannel;
+    }
+
+    public void setPayChannel(Long payChannel) {
+        this.payChannel = payChannel;
     }
 }

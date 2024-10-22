@@ -144,6 +144,7 @@ swagger:
   enabled: true
 
 alipay:
+  yjType: 0 #  1 支持立减  0 不支持立减
   appid: 2021004153612418  #2021004101688196
   payCount: 2  #支付宝用户最大调用次数
   authorizeUrl: http://pay.ayruiheyue.cn/outside/order/alipay/publicAppAuthorize

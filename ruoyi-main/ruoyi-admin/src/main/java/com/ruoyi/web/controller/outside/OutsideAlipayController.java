@@ -72,6 +72,10 @@ public class OutsideAlipayController extends BaseController {
     private PayZftServer payZftServer;
 
     @Autowired
+    private IMyPayServer myPayServer;
+
+
+    @Autowired
     private  IOrgChannelMerchantService ocmService;
 
     @Value(value = "${ruoyi.profile}")
@@ -88,6 +92,9 @@ public class OutsideAlipayController extends BaseController {
 
     @Value(value = "${alipay.appid}")
     private String appid;
+
+    @Value(value = "${alipay.yjType}")
+    private String yjType;
 
     @Value(value = "${alipay.payCount}")
     private int payCount;
@@ -135,9 +142,14 @@ public class OutsideAlipayController extends BaseController {
         orderInfo.setAccountOrderNo(orderVo.getMerchantOrderNo());
         orderInfo.setCallbackUrl(orderVo.getCallbackUrl());
         orderInfo.setReturnUrl(orderVo.getReturnUrl());
-        BigDecimal bd = orderVo.getAmount().subtract(getRandomRedPacketBetweenMinAndMax());
         orderInfo.setAmount(orderVo.getAmount());
-        orderInfo.setYjamount(bd);
+        if("0".equals(yjType)){
+            orderInfo.setYjamount(orderVo.getAmount());
+        }else {
+            BigDecimal bd = orderVo.getAmount().subtract(getRandomRedPacketBetweenMinAndMax());
+            orderInfo.setAmount(orderVo.getAmount());
+            orderInfo.setYjamount(bd);
+        }
         long id = IdWorkerUtil.getId();
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 //        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSSSS");
@@ -151,9 +163,9 @@ public class OutsideAlipayController extends BaseController {
         if("30".equals(orderVo.getMethod())){
             return payZftServer.tradeOrder(orderInfo);
         }else{
-            if(true){
-                return alipayServer.aliPayment(orderInfo);
-            }else{
+            if (1 == account.getPayChannel()){
+                return payZftServer.tradeOrder(orderInfo);
+            }else {
                 return alipayServer.aliPayment(orderInfo);
             }
         }

@@ -17,15 +17,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="totleAmount"    column="totleAmount"    />
         <result property="totleYjAmount"    column="totleYjAmount"    />
         <result property="cashier"    column="cashier"    />
-
+        <result property="payChannel"    column="payChannel"    />
     </resultMap>
 
     <sql id="selectOrgAccountVo">
-        select id, cashier,accountName, accountPwd, accountAppId, accountStatus, accountToken, createdTime from org_account
+        select id, cashier,payChannel,accountName, accountPwd, accountAppId, accountStatus, accountToken, createdTime from org_account
     </sql>
 
     <select id="selectOrgAccountList" parameterType="com.ruoyi.system.domain.OrgAccount" resultMap="OrgAccountResult">
-        select t1.id, t1.cashier,t1.accountName, t1.accountPwd, t1.accountAppId, t1.accountStatus, t1.accountToken, t1.createdTime,t2.totleTodayAmount,t2.totleTodayYjAmount,t3.totleAmount,t3.totleYjAmount from org_account t1
+        select t1.id, t1.cashier,t1.payChannel,t1.accountName, t1.accountPwd, t1.accountAppId, t1.accountStatus, t1.accountToken, t1.createdTime,t2.totleTodayAmount,t2.totleTodayYjAmount,t3.totleAmount,t3.totleYjAmount from org_account t1
         left join
         (
             SELECT
@@ -91,6 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="accountToken != null">accountToken,</if>
             <if test="createdTime != null">createdTime,</if>
             <if test="cashier != null">cashier,</if>
+            <if test="payChannel != null">payChannel,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="accountName != null">#{accountName},</if>
@@ -100,6 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="accountToken != null">#{accountToken},</if>
             <if test="createdTime != null">#{createdTime},</if>
             <if test="cashier != null">#{cashier},</if>
+            <if test="payChannel != null">#{payChannel},</if>
          </trim>
     </insert>
 
@@ -113,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="accountToken != null">accountToken = #{accountToken},</if>
             <if test="createdTime != null">createdTime = #{createdTime},</if>
             <if test="cashier != null">cashier = #{cashier},</if>
+            <if test="payChannel != null">payChannel = #{payChannel},</if>
         </trim>
         where id = #{id}
     </update>

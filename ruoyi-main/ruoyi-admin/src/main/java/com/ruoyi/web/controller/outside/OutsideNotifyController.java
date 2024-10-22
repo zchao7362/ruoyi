@@ -59,18 +59,17 @@ public class OutsideNotifyController extends BaseController {
         if(sign.equals(callBackModel.getSign())){
             OrgOrderInfo order = orgOrderInfoService.selectorderByOrderId(callBackModel.getOutTradeNo());
             if("TRADE_SUCCESS".equals(callBackModel.getTradeState())){
-
-                String res = payZftServer.queryOrder(ocm.getMerchantNo(),callBackModel.getOutTradeNo(),sign);
-                if("success".equals(res)){
+//                String res = payZftServer.queryOrder(ocm.getMerchantNo(),callBackModel.getOutTradeNo(),sign);
+//                if("success".equals(res)){
                     order.setOrderStatus(1L);
                     order.setCompletionTime(new Date());
                     orgOrderInfoService.updateOrgOrderInfo(order);
                     asyncThread(order);//异步回调
                     return "success";
-                }else{
-                    logger.info("--------------------------------不正常请求！-------------------------------");
-                    return "fail";
-                }
+//                }else{
+//                    logger.info("--------------------------------不正常请求！-------------------------------");
+//                    return "fail";
+//                }
             }else{
                 logger.info("--------------------------------未支付成功！-------------------------------");
                 return "fail";
