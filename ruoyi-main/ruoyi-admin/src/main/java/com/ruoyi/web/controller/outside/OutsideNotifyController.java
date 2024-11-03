@@ -10,6 +10,7 @@ import com.ruoyi.common.utils.security.Md5Utils;
 import com.ruoyi.system.domain.OrgAccount;
 import com.ruoyi.system.domain.OrgChannelMerchant;
 import com.ruoyi.system.domain.OrgOrderInfo;
+import com.ruoyi.system.domain.SysAlipayConfig;
 import com.ruoyi.system.service.*;
 import com.ruoyi.web.controller.outside.domain.CallBackModel;
 import com.ruoyi.web.controller.outside.domain.OutsideOrderVO;
@@ -41,8 +42,9 @@ public class OutsideNotifyController extends BaseController {
 
     @Autowired
     private  IOrgOrderInfoService orgOrderInfoService;
+
     @Autowired
-    private IOrgPayChannelService orgPayChannelService;
+    private ISysAlipayConfigService sysAlipayConfigService;
 
     @Autowired
     private IOrgChannelMerchantService orgChannelMerchantService;
@@ -51,7 +53,7 @@ public class OutsideNotifyController extends BaseController {
 
     @PostMapping("/callback")
     @ResponseBody
-    public String createOrder(@RequestBody CallBackModel callBackModel){
+    public String callback(@RequestBody CallBackModel callBackModel){
 
         OrgChannelMerchant ocm = orgChannelMerchantService.selectOrgChannelMerchantByMerchantNo(callBackModel.getMerchantBaseId());
         String  afterSign = ocm.getMerchantNo()+callBackModel.getOutTradeNo()+ocm.getMerchanKey();
@@ -78,6 +80,36 @@ public class OutsideNotifyController extends BaseController {
             return "fail";
         }
     }
+
+
+    @PostMapping("/myCallback")
+    @ResponseBody
+    public String myCallback(CallBackModel callBackModel){
+        SysAlipayConfig alipayConfig  = sysAlipayConfigService.selectSysAlipayConfig(callBackModel.getAppid());
+        String  afterSign = alipayConfig.getAPPID()+callBackModel.getOrderNo()+ callBackModel.getMerchantOrderNo()+callBackModel.getPayStatus()+callBackModel.getAmount()+callBackModel.getPayTime()+alipayConfig.getAlipayPublicKey();
+        String sign = Md5Utils.hash(afterSign).toUpperCase();
+        if(sign.equals(callBackModel.getSign())){
+            OrgOrderInfo order = orgOrderInfoService.selectorderByOrderId(callBackModel.getMerchantOrderNo());
+            if("1".equals(callBackModel.getPayStatus())){
+                order.setOrderStatus(1L);
+                order.setCompletionTime(new Date());
+                orgOrderInfoService.updateOrgOrderInfo(order);
+                asyncThread(order);//异步回调
+                return "success";
+//                }else{
+//                    logger.info("--------------------------------不正常请求！-------------------------------");
+//                    return "fail";
+//                }
+            }else{
+                logger.info("--------------------------------未支付成功！-------------------------------");
+                return "fail";
+            }
+        }else{
+            return "fail";
+        }
+    }
+
+
 
     @Async
     public void asyncThread(OrgOrderInfo orderInfo){

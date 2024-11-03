@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.OrgOrderInfo;
+import com.ruoyi.system.domain.SysAlipayConfig;
 
 public interface IMyPayServer {
 
@@ -11,16 +12,7 @@ public interface IMyPayServer {
      *
      * 请求方式 POST
      */
-    AjaxResult tradeOrder(OrgOrderInfo orderInfo);
-
-    /**
-     * 订单查询
-     * 接口地址 /back-jar/open/trade/info
-     *
-     * 请求方式 POST
-     */
-    String queryOrder(String merchantId,String merchantTradeNo,String sign);
-
+    AjaxResult tradeOrder(OrgOrderInfo orderInfo, SysAlipayConfig alipayConfig);
 
     /**
      *   退款

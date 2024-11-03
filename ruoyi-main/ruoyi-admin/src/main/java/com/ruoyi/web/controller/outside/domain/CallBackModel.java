@@ -8,23 +8,29 @@ package com.ruoyi.web.controller.outside.domain;
  */
 public class CallBackModel {
 
-        private String buyerId;
+    private String appid;
+    private String orderNo;
+    private String merchantOrderNo;
+    private String payStatus;
+    private String amount;
 
-        private String createTime;
+    private String buyerId;
 
-        private String merchantBaseId;
+    private String createTime;
 
-        private String outTradeNo;
+    private String merchantBaseId;
 
-        private String payTime;
+    private String outTradeNo;
 
-        private String sign;
+    private String payTime;
 
-        private String totalAmount;
+    private String sign;
 
-        private String tradeState;
+    private String totalAmount;
 
-        private String transactionId;
+    private String tradeState;
+
+    private String transactionId;
 
     public String getBuyerId() {
         return buyerId;
@@ -96,5 +102,45 @@ public class CallBackModel {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public String getMerchantOrderNo() {
+        return merchantOrderNo;
+    }
+
+    public void setMerchantOrderNo(String merchantOrderNo) {
+        this.merchantOrderNo = merchantOrderNo;
+    }
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

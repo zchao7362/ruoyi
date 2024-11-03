@@ -190,7 +190,38 @@ public class OutsideController extends BaseController {
         }
     }
 
-
-
+    @PostMapping("/queryJsonOrder")
+    @ResponseBody
+    public AjaxResult queryJsonOrder(@RequestBody OutsideOrderVO orderVo){
+        logger.info("接收参数  :"+orderVo.toString());
+        if(StringUtils.isEmpty(orderVo.getAppid())){
+            return AjaxResult.success("fail");
+        }
+        //验证appid
+        OrgAccount account = new OrgAccount();
+        account.setAccountAppId(orderVo.getAppid());
+        account.setAccountStatus(1L);
+        account = accountService.selectOne(account);
+        String afterSign = orderVo.getAppid()+orderVo.getMerchantOrderNo()+orderVo.getAmount()+orderVo.getTimestamps()+account.getAccountToken();
+        logger.info("after  Sign:"+afterSign);
+        String sign = Md5Utils.hash(afterSign).toUpperCase();
+        logger.info("sign:"+sign);
+        if(!sign.equals(orderVo.getSign())){
+            return AjaxResult.success("fail");
+        }
+        OrgOrderInfo order = new OrgOrderInfo();
+        order.setAccountOrderNo(orderVo.getMerchantOrderNo());
+        order.setAmount(orderVo.getAmount());
+        order.setAccountAppId(orderVo.getAppid());
+        order = orderService.queryOrder(order);
+        if(ObjUtil.isEmpty(order)){
+            return AjaxResult.success("fail");
+        }
+        if(order.getOrderStatus()==1){
+            return AjaxResult.success("success");
+        }else {
+            return AjaxResult.success("fail");
+        }
+    }
 
 }

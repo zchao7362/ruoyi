@@ -60,6 +60,9 @@ public class AlipayServerImpl implements AlipayServer {
     private IOrgOrderInfoService orgOrderInfoService;
 
     @Autowired
+    private IMyPayServer myPayServer;
+
+    @Autowired
     private IOrgTradeComplainService tradeComplainService;
 
     @Autowired
@@ -88,65 +91,70 @@ public class AlipayServerImpl implements AlipayServer {
         if(alipayConfig == null || BeanUtil.isEmpty(alipayConfig)){
             alipayConfig = sysAlipayConfigService.selectSysAlipayConfigStatusTopOne();
         }
-        String aliPayAppid = alipayConfig.getAPPID();
-        AlipayClient alipayClient = null;
-        if(alipayConfig.getKeyOrCert() == 1){
-            logger.info("证书客户端！");
-            alipayClient =  certClient(alipayConfig);
+        String paygetway = "https://openapi.alipay.com/gateway.do";
+        if(paygetway.equals(alipayConfig.getURL())){
+            String aliPayAppid = alipayConfig.getAPPID();
+            AlipayClient alipayClient = null;
+            if(alipayConfig.getKeyOrCert() == 1){
+                logger.info("证书客户端！");
+                alipayClient =  certClient(alipayConfig);
+            }else{
+                logger.info("秘钥客户端！");
+                alipayClient =  alipayClient(alipayConfig);
+            }
+            AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
+            // 封装请求支付信息
+            AlipayTradeWapPayModel model=new AlipayTradeWapPayModel();
+            model.setOutTradeNo(out_trade_no);
+            model.setSubject(subject);
+            model.setTotalAmount(total_amount);
+            model.setBody(body);
+            model.setTimeoutExpress(timeout_express);
+            model.setProductCode(product_code);
+            alipay_request.setBizModel(model);
+            // 设置异步通知地址
+            alipay_request.setNotifyUrl(alipayConfig.getNotifyUrl());
+            // 设置同步地址
+            if(StringUtils.isNotEmpty(orderInfo.getReturnUrl())){
+                alipay_request.setReturnUrl(returnUrl);
+            }else{
+                alipay_request.setReturnUrl(alipayConfig.getReturnUrl());
+            }
+            // form表单生产
+            String form = "";
+            try {
+                // 调用SDK生成表单
+               // form = alipayClient.sdkExecute(alipay_request).getBody();
+                form = alipayClient.pageExecute(alipay_request).getBody();
+            } catch (AlipayApiException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+            if(form==""||"".equals(form)|| StringUtils.isEmpty(form)){
+                return new AjaxResult(AjaxResult.Type.ERROR,"调用异常10010！");
+            }
+            orderInfo.setBodys(form);
+            orderInfo.setMerchantNo(aliPayAppid);
+            orderInfo.setUpdateTime(new Date());
+            orderInfo.setCallbackStatus(0L);
+            String orderMerMd5 = Md5Utils.hash(orderInfo.getOrderNo()+orderInfo.getMerchantNo()).toUpperCase();
+            String payurl ="";
+            if(ObjectUtil.isNotEmpty(orderInfo.getCashier())&&orderInfo.getCashier()==1){
+                payurl = alipay+"rechargeOrder/"+ orderInfo.getOrderNo()+"/"+orderMerMd5;  //收银台
+            }else{
+                payurl = alipay+"payOrderInfo/"+ orderInfo.getOrderNo()+"/"+orderMerMd5;
+            }
+            orderInfo.setPayUrl(payurl);
+            orgOrderInfoService.insertOrgOrderInfo(orderInfo);
+            Map<String,String > resMap = new HashMap();
+            resMap.put("orderPayLink",payurl);
+            resMap.put("orderNo",orderInfo.getOrderNo());
+            resMap.put("merchantOrderNo",orderInfo.getAccountOrderNo());
+            return new AjaxResult(AjaxResult.Type.SUCCESS,null, JSONObject.toJSON(resMap));
         }else{
-            logger.info("秘钥客户端！");
-            alipayClient =  alipayClient(alipayConfig);
+            return myPayServer.tradeOrder(orderInfo,alipayConfig);
         }
-        AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
-        // 封装请求支付信息
-        AlipayTradeWapPayModel model=new AlipayTradeWapPayModel();
-        model.setOutTradeNo(out_trade_no);
-        model.setSubject(subject);
-        model.setTotalAmount(total_amount);
-        model.setBody(body);
-        model.setTimeoutExpress(timeout_express);
-        model.setProductCode(product_code);
-        alipay_request.setBizModel(model);
-        // 设置异步通知地址
-        alipay_request.setNotifyUrl(alipayConfig.getNotifyUrl());
-        // 设置同步地址
-        if(StringUtils.isNotEmpty(orderInfo.getReturnUrl())){
-            alipay_request.setReturnUrl(returnUrl);
-        }else{
-            alipay_request.setReturnUrl(alipayConfig.getReturnUrl());
-        }
-        // form表单生产
-        String form = "";
-        try {
-            // 调用SDK生成表单
-           // form = alipayClient.sdkExecute(alipay_request).getBody();
-            form = alipayClient.pageExecute(alipay_request).getBody();
-        } catch (AlipayApiException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        if(form==""||"".equals(form)|| StringUtils.isEmpty(form)){
-            return new AjaxResult(AjaxResult.Type.ERROR,"调用异常10010！");
-        }
-        orderInfo.setBodys(form);
-        orderInfo.setMerchantNo(aliPayAppid);
-        orderInfo.setUpdateTime(new Date());
-        orderInfo.setCallbackStatus(0L);
-        String orderMerMd5 = Md5Utils.hash(orderInfo.getOrderNo()+orderInfo.getMerchantNo()).toUpperCase();
-        String payurl ="";
-        if(ObjectUtil.isNotEmpty(orderInfo.getCashier())&&orderInfo.getCashier()==1){
-            payurl = alipay+"rechargeOrder/"+ orderInfo.getOrderNo()+"/"+orderMerMd5;  //收银台
-        }else{
-            payurl = alipay+"payOrderInfo/"+ orderInfo.getOrderNo()+"/"+orderMerMd5;
-        }
-        orderInfo.setPayUrl(payurl);
-        orgOrderInfoService.insertOrgOrderInfo(orderInfo);
-        Map<String,String > resMap = new HashMap();
-        resMap.put("orderPayLink",payurl);
-        resMap.put("orderNo",orderInfo.getOrderNo());
-        resMap.put("merchantOrderNo",orderInfo.getAccountOrderNo());
-        return new AjaxResult(AjaxResult.Type.SUCCESS,null, JSONObject.toJSON(resMap));
     }
 
 
