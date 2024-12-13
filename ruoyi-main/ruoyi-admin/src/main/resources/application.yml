@@ -11,7 +11,7 @@ ruoyi:
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   #profile: /home/java/uploadPath
   #appUrl: http://pay.yjw.ink
-  profile: D:/github/ruoyi/uploadPath
+  profile: D:/java_pay/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
@@ -147,10 +147,10 @@ alipay:
   yjType: 0 #  1 支持立减  0 不支持立减
   appid: 2021004153612418  #2021004101688196
   payCount: 2  #支付宝用户最大调用次数
-  authorizeUrl: http://pay.ayruiheyue.cn/outside/order/alipay/publicAppAuthorize
-  getUidUrl: http://pay.ayruiheyue.cn/outside/order/payOrderGetUid
-  appUrl: http://pay.ayruiheyue.cn
-  orderPay: http://pay.ayruiheyue.cn/outside/order/
-  callback: http://pay.ayruiheyue.cn/outside/order/alipay/callback
-  returnUrl: http://pay.ayruiheyue.cn/outside/order/alipay/return
+  authorizeUrl: http://localhost:8080/outside/order/alipay/publicAppAuthorize
+  getUidUrl: http://localhost:8080/outside/order/payOrderGetUid
+  appUrl: http://localhost:8080
+  orderPay: http://localhost:8080/outside/order/
+  callback: http://localhost:8080/outside/order/alipay/callback
+  returnUrl: http://localhost:8080/outside/order/alipay/return
   apikey: 95ad4df24fec408b590c10c4dc7fb827

@@ -5,15 +5,15 @@ import com.ruoyi.system.domain.SysAlipayConfig;
 
 /**
  * alipayConfigService接口
- * 
+ *
  * @author ruoyi
  * @date 2023-06-10
  */
-public interface ISysAlipayConfigService 
+public interface ISysAlipayConfigService
 {
     /**
      * 查询alipayConfig
-     * 
+     *
      * @param id alipayConfig主键
      * @return alipayConfig
      */
@@ -27,7 +27,7 @@ public interface ISysAlipayConfigService
 
     /**
      * 查询alipayConfig列表
-     * 
+     *
      * @param sysAlipayConfig alipayConfig
      * @return alipayConfig集合
      */
@@ -36,7 +36,7 @@ public interface ISysAlipayConfigService
 
     /**
      * 新增alipayConfig
-     * 
+     *
      * @param sysAlipayConfig alipayConfig
      * @return 结果
      */
@@ -44,7 +44,7 @@ public interface ISysAlipayConfigService
 
     /**
      * 修改alipayConfig
-     * 
+     *
      * @param sysAlipayConfig alipayConfig
      * @return 结果
      */
@@ -52,7 +52,7 @@ public interface ISysAlipayConfigService
 
     /**
      * 批量删除alipayConfig
-     * 
+     *
      * @param ids 需要删除的alipayConfig主键集合
      * @return 结果
      */
@@ -60,9 +60,12 @@ public interface ISysAlipayConfigService
 
     /**
      * 删除alipayConfig信息
-     * 
+     *
      * @param id alipayConfig主键
      * @return 结果
      */
     public int deleteSysAlipayConfigById(Long id);
+
+
+
 }

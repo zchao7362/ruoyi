@@ -14,6 +14,7 @@ public class OutsideOrderVO extends BaseEntity {
     private String appid;
     private String timestamps;
     private String merchantOrderNo;
+    private String merchantNo;
     private String callbackUrl;
     private String returnUrl;
     private BigDecimal amount;
@@ -24,7 +25,7 @@ public class OutsideOrderVO extends BaseEntity {
 
     private String uid;
     private String subject;
-    private String regionName; //大区名称
+    private String regionName; //大区名称/店铺名称
     private Long cashier;//是否要收银台   1显示    或  0 不显示
 
 
@@ -137,6 +138,14 @@ public class OutsideOrderVO extends BaseEntity {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getMerchantNo() {
+        return merchantNo;
+    }
+
+    public void setMerchantNo(String merchantNo) {
+        this.merchantNo = merchantNo;
     }
 
     @Override

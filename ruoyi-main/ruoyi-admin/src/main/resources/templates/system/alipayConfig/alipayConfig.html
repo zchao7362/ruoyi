@@ -44,12 +44,16 @@
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
             </div>
+            <div class="imgcontainer">
+
+            </div>
         </div>
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('system:alipayConfig:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:alipayConfig:remove')}]];
+        var getQRCodeFlag = [[${@permission.hasPermi('system:alipayConfig:getQRCode')}]];
         var prefix = ctx + "system/alipayConfig";
 
         $(function() {
@@ -59,6 +63,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                getQRCodeUrl: prefix + "/createCommonQRCode/",
                 modalName: "alipayConfig",
                 columns: [{
                     checkbox: true
@@ -145,12 +150,78 @@
                         var actions = [];
                         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-danger btn-xs ' + getQRCodeFlag + '" href="javascript:void(0)" onclick="getQRCode(\'' + row.id + '\')">下载二维码</a>');
                         return actions.join('');
                     }
                 }]
             };
             $.table.init(options);
         });
+
+        function getQRCode(id) {
+            table.set();
+            var url = table.options.getQRCodeUrl+id;
+            $.ajax({
+                url: url, // 替换为你的图片URL
+                type: 'GET',
+                xhrFields:{
+                    responseType: 'blob'
+                },
+                success: function(data) {
+                    var blobUrl = window.URL.createObjectURL(data);
+                    // 创建一个临时的a标签用于下载
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = blobUrl;
+                    downloadLink.download = 'qrCode.jpg'; // 指定下载文件名
+
+                    // 触发a标签的点击事件
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+
+                    // 清理临时的URL和下载链接
+                    document.body.removeChild(downloadLink);
+                    window.URL.revokeObjectURL(blobUrl);
+                }
+            });
+
+            // $.ajax({
+            //     url: url, // 替换为你的图片URL
+            //     type: 'GET',
+            //     xhrFields:{
+            //         responseType: 'blob'
+            //     },
+            //     success: function(data) {
+            //        const qrUrl = window.URL.createObjectURL(data);
+            //        const a = document.createElement('a');
+            //        a.download = 'QrCode.jpg';
+            //        document.body.appendChild(a);
+            //        a.click();
+            //        a.remove();
+            //        window.URL.revokeObjectURL(qrUrl);
+            //     },
+            //     error: function (xhr,status,error) {
+            //         console.error("下载失败",error)
+            //     }
+            // });
+
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("get", url, true);
+            // xhr.responseType = "blob";
+            // xhr.onload = function() {
+            //     if (this.status == 200) {
+            //         var blob = this.response;
+            //         var img = document.createElement("img");
+            //         img.onload = function(e) {
+            //             window.URL.revokeObjectURL(img.src);
+            //         };
+            //         img.src = window.URL.createObjectURL(blob);
+            //         $("#imgcontainer").html(img);
+            //     }
+            // }
+            // xhr.send();
+        }
+
+
     </script>
 </body>
 </html>

@@ -1,7 +1,12 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import cn.hutool.extra.qrcode.QrCodeUtil;
+import com.alipay.api.domain.QrcodeEntity;
+import com.ruoyi.common.utils.bean.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysAlipayConfigMapper;
 import com.ruoyi.system.domain.SysAlipayConfig;
@@ -10,19 +15,24 @@ import com.ruoyi.common.core.text.Convert;
 
 /**
  * alipayConfigService业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2023-06-10
  */
 @Service
-public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService 
+public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
 {
+
+    @Value(value = "${alipay.orderPay}")
+    private String orderPay;
+
+
     @Autowired
     private SysAlipayConfigMapper sysAlipayConfigMapper;
 
     /**
      * 查询alipayConfig
-     * 
+     *
      * @param id alipayConfig主键
      * @return alipayConfig
      */
@@ -53,7 +63,7 @@ public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
 
     /**
      * 查询alipayConfig列表
-     * 
+     *
      * @param sysAlipayConfig alipayConfig
      * @return alipayConfig
      */
@@ -65,7 +75,7 @@ public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
 
     /**
      * 新增alipayConfig
-     * 
+     *
      * @param sysAlipayConfig alipayConfig
      * @return 结果
      */
@@ -77,7 +87,7 @@ public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
 
     /**
      * 修改alipayConfig
-     * 
+     *
      * @param sysAlipayConfig alipayConfig
      * @return 结果
      */
@@ -89,7 +99,7 @@ public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
 
     /**
      * 批量删除alipayConfig
-     * 
+     *
      * @param ids 需要删除的alipayConfig主键
      * @return 结果
      */
@@ -101,7 +111,7 @@ public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
 
     /**
      * 删除alipayConfig信息
-     * 
+     *
      * @param id alipayConfig主键
      * @return 结果
      */
@@ -110,4 +120,6 @@ public class SysAlipayConfigServiceImpl implements ISysAlipayConfigService
     {
         return sysAlipayConfigMapper.deleteSysAlipayConfigById(id);
     }
+
+
 }
