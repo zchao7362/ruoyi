@@ -3,6 +3,8 @@ package com.ruoyi.system.service;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.OrgOrderInfo;
 
+import java.io.IOException;
+
 public interface PayZftServer {
 
     /**
@@ -22,8 +24,6 @@ public interface PayZftServer {
      */
     String queryOrder(String merchantId,String merchantTradeNo,String sign);
 
-
-
     /**
      *   退款
      *  接口地址 /back-jar/open/trade/refund
@@ -39,4 +39,9 @@ public interface PayZftServer {
     AjaxResult notifyOrder();
 
 
+    AjaxResult yujianTradeOrder(OrgOrderInfo orderInfo) throws IOException;
+
+    String yujianTradeGameOrder(OrgOrderInfo orderInfo);
+
+    String yujianQueryOrder(String merchantId,String merchantTradeNo,String sign);
 }

@@ -18,6 +18,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -168,4 +172,80 @@ public class PayZftServerImpl implements PayZftServer {
         return null;
     }
 
+    @Override
+    public AjaxResult yujianTradeOrder(OrgOrderInfo orderInfo) throws IOException {
+        //1、查询商户通道是否可用
+        List<OrgChannelMerchant> ocmlist = orgChannelMerchantService.selectOrgChannelMerchantList(null);
+        if(ocmlist == null || ocmlist.isEmpty()){
+            logger.info("2000：商户通道不可用！请联系管理员！");
+            return AjaxResult.error();
+        }
+        OrgChannelMerchant ocm = ocmlist.get(0);
+        OrgPayChannel orgPayChannel = orgPayChannelService.selectOrgPayChannelById(ocm.getChannelId());
+
+        String url = orgPayChannel.getCreaterOrderUrl();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SortedMap<String, String> map = new TreeMap<String, String>();
+        map.put("pay_memberid","10415");  //商户号
+        map.put("pay_orderid", orderInfo.getOrderNo());  //订单号 上送订单号唯一, 字符长度20
+        map.put("pay_applydate", sdf.format(new Date()));//提交时间
+        map.put("pay_bankcode","902");//银行编码
+        map.put("pay_notifyurl",orgPayChannel.getCallbackUrl());//服务端通知
+        map.put("pay_callbackurl",orderInfo.getReturnUrl());//页面跳转通知
+        String resultstring =orderInfo.getAmount().doubleValue()+"";
+        String amountStr = resultstring.replaceAll("0*$", "").replaceAll("\\.$", "");
+        map.put("pay_amount",amountStr);//订单金额
+        map.put("pay_productname","游戏充值");//商品名称
+        //map.put("pay_attach","游戏充值");//订单描述
+        // map.put("pay_productnum","游戏充值");//订单描述
+        //map.put("pay_productdesc","游戏充值");//订单描述
+        //map.put("pay_userid","游戏充值");//订单描述
+        //map.put("pay_producturl","游戏充值");//订单描述
+        //map.put("json","游戏充值");//订单描述
+        String signTemp = Hzxj_demo.mapToStringAndTrim(map)+"&"+ocm.getMerchanKey();
+        System.out.println("订单参数: signTemp:"+signTemp);
+        //signTemp = Hzxj_demo.md5encode(signTemp).toUpperCase();
+        String sign = Md5Utils.hash(signTemp).toUpperCase();
+        System.out.println("订单参数: sign:"+sign);
+        //map.put("sign",sign);//签名(不参与签名)
+        map.put("pay_md5sign",sign);//MD5签名
+
+//        JSONObject respJson = new JSONObject(null);
+//        String strjson = respJson.toString();
+//        logger.info("输入参数 ——"+strjson);
+        String callbackJson =Hzxj_demo.sendPost(url, Hzxj_demo.mapToStringAndTrim(map),"utf-8");
+        //String callbackJson = HttpUtil.createPost(url).body(strjson).execute().body();
+        logger.info("输出参数 ——"+callbackJson);
+        JSONObject json = JSONObject.parseObject(callbackJson);
+        if("200".equals(json.getString("code")) || "0".equals(json.getString("code"))){
+            orderInfo.setPayUrl(json.getString("data"));
+            orgOrderInfoService.insertOrgOrderInfo(orderInfo);
+            Map<String,String > resMap = new HashMap();
+            resMap.put("orderPayLink",json.getString("data"));
+            resMap.put("orderNo",orderInfo.getOrderNo());
+            resMap.put("merchantOrderNo",orderInfo.getAccountOrderNo());
+            return new AjaxResult(AjaxResult.Type.SUCCESS,null, JSONObject.toJSON(resMap));
+        }else{
+            logger.info("3000：调用失败！请联系管理员！");
+            return AjaxResult.error();
+        }
+    }
+
+    @Override
+    public String yujianTradeGameOrder(OrgOrderInfo orderInfo) {
+        return "";
+    }
+
+    @Override
+    public String yujianQueryOrder(String merchantId, String merchantTradeNo, String sign) {
+        return "";
+    }
+
+//    public static void main(String[] args) {
+//        BigDecimal bd = new BigDecimal(1.00);
+//        String resultstring =bd.doubleValue()+"";
+//        String str1 = resultstring.replaceAll("0*$", "").replaceAll("\\.$", "");
+//        System.out.println(resultstring);
+//        System.out.println(str1);
+//    }
 }

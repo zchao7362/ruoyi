@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 支付宝用户信息对象 alipay_user_info
- * 
+ *
  * @author ruoyi
  * @date 2023-08-19
  */
@@ -23,6 +23,10 @@ public class AlipayUserInfo extends BaseEntity
     /** uid */
     @Excel(name = "uid")
     private String uid;
+
+    @Excel(name = "appid")
+    private String appid;
+
 
     private Long iszt;
 
@@ -38,39 +42,39 @@ public class AlipayUserInfo extends BaseEntity
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date gmtCreate;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setUid(String uid) 
+    public void setUid(String uid)
     {
         this.uid = uid;
     }
 
-    public String getUid() 
+    public String getUid()
     {
         return uid;
     }
-    public void setIpadd(String ipadd) 
+    public void setIpadd(String ipadd)
     {
         this.ipadd = ipadd;
     }
 
-    public String getIpadd() 
+    public String getIpadd()
     {
         return ipadd;
     }
-    public void setGmtCreate(Date gmtCreate) 
+    public void setGmtCreate(Date gmtCreate)
     {
         this.gmtCreate = gmtCreate;
     }
 
-    public Date getGmtCreate() 
+    public Date getGmtCreate()
     {
         return gmtCreate;
     }
@@ -99,11 +103,20 @@ public class AlipayUserInfo extends BaseEntity
         this.payCount = payCount;
     }
 
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
     @Override
     public String toString() {
         return "AlipayUserInfo{" +
                 "id=" + id +
                 ", uid='" + uid + '\'' +
+                ", appid='" + appid + '\'' +
                 ", iszt=" + iszt +
                 ", initCount=" + initCount +
                 ", payCount=" + payCount +

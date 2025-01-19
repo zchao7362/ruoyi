@@ -40,4 +40,8 @@ public interface AlipayServer {
 
     //查询投诉列表
     void alipayMerchantTradecomplainBatchquery() throws AlipayApiException;
+
+
+    String getAlipayUid(String appid) throws AlipayApiException;
+
 }

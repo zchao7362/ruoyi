@@ -165,6 +165,8 @@ public class OutsideAlipayController extends BaseController {
         }else{
             if (1 == account.getPayChannel()){
                 return payZftServer.tradeOrder(orderInfo);
+            }if (2 == account.getPayChannel()){
+                return payZftServer.yujianTradeOrder(orderInfo);
             }else {
                 return alipayServer.aliPayment(orderInfo);
             }
@@ -189,6 +191,11 @@ public class OutsideAlipayController extends BaseController {
 //            logger.error("ip地址："+ipadd+"大于2");
 //            return "支付次数超限，请更换支付通道！";
 //        }
+
+        // 获取并更新会员 信息
+        AlipayUserInfo  alipayUserInfo = new AlipayUserInfo();
+        alipayUserInfo.setAppid(orderInfo.getMerchantNo());
+        getAlipayUserInfo(alipayUserInfo);
 
         if(BeanUtil.isNotEmpty(orderInfo)) {
             String  aftSign = Md5Utils.hash(orderInfo.getOrderNo()+orderInfo.getMerchantNo()).toUpperCase();
@@ -424,6 +431,23 @@ public class OutsideAlipayController extends BaseController {
         int count  = alipayUserInfoService.updateAlipayUserInfo(alipayUserInfo);
         logger.info("更新支付订单用户UID和IP地址："+count+" 条数据");
     }
+
+    @Async
+    public void getAlipayUserInfo(AlipayUserInfo userInfo){
+        AlipayUserInfo alipayUserInfo = new AlipayUserInfo();
+        try {
+            alipayUserInfo.setUid(alipayServer.getAlipayUid(userInfo.getAppid()));
+        } catch (AlipayApiException e) {
+            logger.info("无法获取用户Uid ！");
+            throw new RuntimeException(e);
+        }
+        alipayUserInfo.setPayCount(0L);
+        alipayUserInfo.setInitCount(1L);
+        alipayUserInfo.setGmtCreate(new Date());
+        int count  = alipayUserInfoService.insertAlipayUserInfo(alipayUserInfo);
+        logger.info("更新支付订单用户UID和IP地址："+count+" 条数据");
+    }
+
 
     public static String getIpAddr(HttpServletRequest request) {
 

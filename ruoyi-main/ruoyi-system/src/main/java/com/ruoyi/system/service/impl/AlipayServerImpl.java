@@ -754,4 +754,35 @@ public class AlipayServerImpl implements AlipayServer {
         }
     }
 
+
+
+    @Override
+    public String getAlipayUid(String appid) throws AlipayApiException {
+
+        int weight = (int)(Math.random()*10000)%100;
+        SysAlipayConfig alipayConfig  = sysAlipayConfigService.selectSysAlipayConfig(appid);;
+        if(alipayConfig == null || BeanUtil.isEmpty(alipayConfig)){
+            logger.info("SysAlipayConfig is null！");
+            return "";
+        }
+        AlipayClient alipayClient = null;
+        if(alipayConfig.getKeyOrCert() == 1){
+            logger.info("证书客户端！");
+            alipayClient =  certClient(alipayConfig);
+        }else{
+            logger.info("秘钥客户端！");
+            alipayClient =  alipayClient(alipayConfig);
+        }
+
+        AlipayUserInfoShareRequest request = new AlipayUserInfoShareRequest();
+        AlipayUserInfoShareResponse response = alipayClient.certificateExecute(request);
+        if(response.isSuccess()){
+            logger.debug("用户信息 :"+response.getBody());
+            System.out.println("调用成功");
+        } else {
+            System.out.println("调用失败");
+        }
+
+        return "123";
+    }
 }
