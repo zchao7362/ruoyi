@@ -193,9 +193,9 @@ public class OutsideAlipayController extends BaseController {
 //        }
 
         // 获取并更新会员 信息
-        AlipayUserInfo  alipayUserInfo = new AlipayUserInfo();
-        alipayUserInfo.setAppid(orderInfo.getMerchantNo());
-        getAlipayUserInfo(alipayUserInfo);
+//        AlipayUserInfo  alipayUserInfo = new AlipayUserInfo();
+//        alipayUserInfo.setAppid(orderInfo.getMerchantNo());
+//        getAlipayUserInfo(alipayUserInfo);
 
         if(BeanUtil.isNotEmpty(orderInfo)) {
             String  aftSign = Md5Utils.hash(orderInfo.getOrderNo()+orderInfo.getMerchantNo()).toUpperCase();
