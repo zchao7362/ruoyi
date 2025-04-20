@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.AlipayUserInfoMapper">
-    
+
     <resultMap type="AlipayUserInfo" id="AlipayUserInfoResult">
         <result property="id"    column="id"    />
         <result property="uid"    column="uid"    />
@@ -12,25 +12,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="payCount"    column="payCount"    />
         <result property="initCount"    column="initCount"    />
         <result property="gmtCreate"    column="gmt_create"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectAlipayUserInfoVo">
-        select id, uid, ipadd,iszt,payCount,initCount,gmt_create from alipay_user_info
+        select id, uid, ipadd,iszt,payCount,initCount,gmt_create,update_time from alipay_user_info
     </sql>
 
     <select id="selectAlipayUserInfoList" parameterType="AlipayUserInfo" resultMap="AlipayUserInfoResult">
         <include refid="selectAlipayUserInfoVo"/>
-        <where>  
+        <where>
             <if test="uid != null  and uid != ''"> and uid = #{uid}</if>
             <if test="ipadd != null  and ipadd != ''"> and ipadd = #{ipadd}</if>
             <if test="iszt != null  and iszt != ''"> and iszt = #{iszt}</if>
             <if test="payCount != null  and payCount != ''"> and payCount = #{payCount}</if>
             <if test="initCount != null  and initCount != ''"> and initCount = #{initCount}</if>
             <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
         </where>
-        order by payCount desc,initCount desc
+        order by update_time desc,gmt_create desc,payCount desc,initCount desc
     </select>
-    
+
     <select id="selectAlipayUserInfoById" parameterType="Long" resultMap="AlipayUserInfoResult">
         <include refid="selectAlipayUserInfoVo"/>
         where id = #{id}
@@ -57,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payCount != null">payCount,</if>
             <if test="initCount != null">initCount,</if>
             <if test="gmtCreate != null">gmt_create,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uid != null and uid != ''">#{uid},</if>
@@ -64,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payCount != null">#{payCount},</if>
             <if test="initCount != null">#{initCount},</if>
             <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
@@ -76,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="payCount != null">payCount = #{payCount},</if>
             <if test="initCount != null">initCount = #{initCount},</if>
             <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>
@@ -85,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAlipayUserInfoByIds" parameterType="String">
-        delete from alipay_user_info where id in 
+        delete from alipay_user_info where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

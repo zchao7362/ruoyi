@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.system.domain.OrgAccount;
@@ -23,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 支付宝用户信息Controller
- * 
+ *
  * @author ruoyi
  * @date 2023-08-19
  */
@@ -88,6 +89,7 @@ public class AlipayUserInfoController extends BaseController
     @ResponseBody
     public AjaxResult addSave(AlipayUserInfo alipayUserInfo)
     {
+        alipayUserInfo.setUpdateTime(new Date());
         return toAjax(alipayUserInfoService.insertAlipayUserInfo(alipayUserInfo));
     }
 

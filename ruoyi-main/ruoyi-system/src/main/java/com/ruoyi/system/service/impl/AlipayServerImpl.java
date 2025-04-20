@@ -287,11 +287,12 @@ public class AlipayServerImpl implements AlipayServer {
                 order.setMerchanOrderNo(trade_no);
                 order.setOrderStatus(1L);
                 order.setCompletionTime(new Date());
-                int count =  orgOrderInfoService.updateOrgOrderInfo(order);
-                if (count<=0) {
-                    logger.error("ali pay error : 订单更新失败==》" + out_trade_no);
-                    return "fail";
-                }
+                asyncUpdateOrderStatus(order);
+//                int count =  orgOrderInfoService.updateOrgOrderInfo(order);
+//                if (count<=0) {
+//                    logger.error("ali pay error : 订单更新失败==》" + out_trade_no);
+//                    return "fail";
+//                }
                 //支付成功设置uid值
                 if(StringUtils.isNotEmpty(order.getUid())){
                     inseterAlipayUserInfo(order.getUid(),order.getClientIp());
@@ -396,9 +397,18 @@ public class AlipayServerImpl implements AlipayServer {
 
     @Async
     public void asyncThread(OrgOrderInfo orderInfo){
-        orderInfoService.callbackOrder(orderInfo);
+            orderInfoService.callbackOrder(orderInfo);
     }
 
+    @Async
+    public void asyncUpdateOrderStatus(OrgOrderInfo orderInfo){
+        logger.info("ali pay error : 订单更新開始==》");
+        int count =  orgOrderInfoService.updateOrgOrderInfo(orderInfo);
+        logger.info("ali pay error : 订单更新結束==》更新數據：" + count+"條");
+        if (count<=0) {
+            logger.error("ali pay error : 订单更新失败==》" + orderInfo.getOrderNo());
+        }
+    }
 
     @Async
     public void inseterAlipayUserInfo(String uid,String ipadd){
@@ -785,4 +795,7 @@ public class AlipayServerImpl implements AlipayServer {
 
         return "123";
     }
+
+
+
 }

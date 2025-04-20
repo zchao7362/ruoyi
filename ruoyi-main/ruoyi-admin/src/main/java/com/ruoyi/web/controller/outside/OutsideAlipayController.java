@@ -98,6 +98,11 @@ public class OutsideAlipayController extends BaseController {
 
     @Value(value = "${alipay.payCount}")
     private int payCount;
+
+
+    @Value(value = "${blacklist.blackType}")
+    private boolean blackType;
+
     private static final Logger logger = LoggerFactory.getLogger(OutsideAlipayController.class);
 
 
@@ -422,12 +427,14 @@ public class OutsideAlipayController extends BaseController {
         alipayUserInfo.setPayCount(0L);
         alipayUserInfo.setInitCount(1L);
         alipayUserInfo.setGmtCreate(new Date());
+        alipayUserInfo.setUpdateTime(new Date());
         int count  = alipayUserInfoService.insertAlipayUserInfo(alipayUserInfo);
         logger.info("更新支付订单用户UID和IP地址："+count+" 条数据");
     }
     @Async
     public void updateAlipayUserInfo(AlipayUserInfo alipayUserInfo){
         alipayUserInfo.setInitCount(alipayUserInfo.getInitCount()+1);
+        alipayUserInfo.setGmtCreate(new Date());
         int count  = alipayUserInfoService.updateAlipayUserInfo(alipayUserInfo);
         logger.info("更新支付订单用户UID和IP地址："+count+" 条数据");
     }
@@ -443,7 +450,7 @@ public class OutsideAlipayController extends BaseController {
         }
         alipayUserInfo.setPayCount(0L);
         alipayUserInfo.setInitCount(1L);
-        alipayUserInfo.setGmtCreate(new Date());
+        alipayUserInfo.setUpdateTime(new Date());
         int count  = alipayUserInfoService.insertAlipayUserInfo(alipayUserInfo);
         logger.info("更新支付订单用户UID和IP地址："+count+" 条数据");
     }
@@ -505,7 +512,7 @@ public class OutsideAlipayController extends BaseController {
 
     @GetMapping("/payOrderGetUid")
     @ResponseBody
-    public String payOrderGetUid(HttpServletRequest request) throws AlipayApiException, UnsupportedEncodingException {
+    public String payOrderGetUid(HttpServletRequest request,HttpServletResponse response) throws AlipayApiException, IOException {
 
         String code = new String(request.getParameter("auth_code").getBytes("ISO-8859-1"),"UTF-8");
         String uid = alipayServer.loginCallBack(code,appid);
@@ -540,15 +547,25 @@ public class OutsideAlipayController extends BaseController {
         }else{
             updateAlipayUserInfo(alipayUserInfo);
         }
-
         updateOrderInfoClientIp(orderInfo);
-
         if(BeanUtil.isNotEmpty(orderInfo)) {
             String  aftSign = Md5Utils.hash(orderInfo.getOrderNo()+orderInfo.getMerchantNo()).toUpperCase();
             logger.info("   aftSign:"+aftSign);
             if(strings[1].equals(aftSign)){
                 logger.info("-----------------------");
-                return orderInfo.getBodys();
+                if(blackType){
+                    logger.info("--------调用黑名单接口--------");
+                    //调用黑名单接口 打开form表单
+                    boolean temp = alipayUserInfoService.useridIsBlackList(uid);
+                    if(!temp){
+                        return orderInfo.getBodys();
+                    }else{
+                        return "调用失败，请重试！";
+                    }
+                }else {
+                    return orderInfo.getBodys();
+                }
+
             }else{
                 logger.error("解密失败：");
                 return "调用失败";

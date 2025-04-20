@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://8.149.138.201:3306/orgkp?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
-                username: orgkp
-                password: 8aAdC7wwHnCWBhHG
+                url: jdbc:mysql://150.138.81.77:3306/sz_hbhdpy?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+                username: sz_hbhdpy
+                password: sGYfLDmnzX6LBjmK
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭

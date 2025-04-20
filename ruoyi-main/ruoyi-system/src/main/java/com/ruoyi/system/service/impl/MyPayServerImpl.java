@@ -37,8 +37,7 @@ public class MyPayServerImpl implements IMyPayServer {
         if(ocmlist == null || ocmlist.isEmpty()){
             logger.info("2000：商户通道不可用！请联系管理员！");
             return AjaxResult.error();
-        }
-        Map<String, Object> map = new HashMap<String, Object>();
+        }Map<String, Object> map = new HashMap<String, Object>();
         map.put("appid",alipayConfig.getAPPID());  //商户ID
         map.put("amount", orderInfo.getYjamount().toString());  //支付金额
         map.put("payType", "QUICK_WAP_WAY");//唯一随机字符串   支付方式 FAST_INSTANT_TRADE_PAY电脑支付 ,QUICK_WAP_WAY手机支付,可用值:JSAPI_PAY,QUICK_WAP_WAY,FAST_INSTANT_TRADE_PAY,WX_MWEB,WX_NATIVE,WX_APP
