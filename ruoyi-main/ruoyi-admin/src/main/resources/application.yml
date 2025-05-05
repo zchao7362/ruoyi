@@ -158,12 +158,12 @@ alipay:
   yjType: 0 #  1 支持立减  0 不支持立减
   appid: 2021004171605081  #2021003127666952
   payCount: 0  #支付宝用户最大调用次数0为不限次数
-  authorizeUrl: http://pay.csyaoyue.com/outside/order/alipay/publicAppAuthorize
-  getUidUrl: http://pay.csyaoyue.com/outside/order/payOrderGetUid #支付宝配置UID
-  appUrl: http://pay.csyaoyue.com
-  orderPay: http://pay.csyaoyue.com/outside/order/
-  callback: http://pay.csyaoyue.com/outside/order/alipay/callback
-  returnUrl: http://pay.csyaoyue.com/outside/order/alipay/return
+  authorizeUrl: http://pay.hbhdpy.cn/outside/order/alipay/publicAppAuthorize
+  getUidUrl: http://pay.hbhdpy.cn/outside/order/payOrderGetUid #支付宝配置UID
+  appUrl: http://pay.hbhdpy.cn
+  orderPay: http://pay.hbhdpy.cn/outside/order/
+  callback: http://pay.hbhdpy.cn/outside/order/alipay/callback
+  returnUrl: http://pay.hbhdpy.cn/outside/order/alipay/return
   subject: 《战神霸域》游戏充值
   apikey: 95ad4df24fec408b590c10c4dc7fb827
 
@@ -172,3 +172,10 @@ blacklist:
   blackType: true   #是否起用黑名单 true  false
   blackNameValue: eDKCcT4ZfalBlrbgE4UrMLQcKZ3jM7fT
   blackNameListURL: https://alipay.bjbczkj.cn/open/api/blacklist/check
+
+# 安全发
+safeIssuedSetting:
+  appId: P863OVZ0CNED2J4L7WEVSVAV
+  appSecret: 9FKOBOXAXWIJVIJTPOHPUO5QXDHD9L
+  safeIssuedURL:  http://xinshengtong.net/api
+  callbackIP: 34.150.69.187
