@@ -158,7 +158,7 @@ public class OutsideAlipayController extends BaseController {
         long id = IdWorkerUtil.getId();
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 //        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmssSSSS");
-        String orderNo = "D"+id;
+        String orderNo = "D"+id+System.currentTimeMillis();
         orderInfo.setOrderNo(orderNo);
         orderInfo.setSubject("用户充值");//sdf1
         orderInfo.setAcountAppId(orderVo.getAppid());
@@ -586,5 +586,8 @@ public class OutsideAlipayController extends BaseController {
         return prefix + "/sendAlipay";
     }
 
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+    }
 
 }
